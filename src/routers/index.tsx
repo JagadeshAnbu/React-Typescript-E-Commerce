@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Page } from "./types";
 import ScrollToTop from "./ScrollToTop";
 import Footer from "shared/Footer/Footer";
 import PageHome from "containers/PageHome/PageHome";
@@ -29,13 +28,21 @@ import CheckoutPage from "containers/PageCheckout/CheckoutPage";
 import PageCollection2 from "containers/PageCollection2";
 import { Toaster } from "react-hot-toast";
 
+
+// Define RouteConfig type inline
+type Page = {
+  path: string;
+  component: React.ComponentType<any>;
+};
+
+
 export const pages: Page[] = [
   { path: "/", component: PageHome },
   { path: "/home2", component: PageHome2 },
   { path: "/home3", component: PageHome3 },
   //
   { path: "/home-header-2", component: PageHome },
-  { path: "/product-detail", component: ProductDetailPage },
+  { path: "/product-detail/:productId", component: ProductDetailPage } as Page,
   { path: "/product-detail-2", component: ProductDetailPage2 },
   //
   { path: "/page-collection-2", component: PageCollection2 },
@@ -68,10 +75,10 @@ const MyRoutes = () => {
       <ScrollToTop />
       <SiteHeader />
       <Routes>
-        {pages.map(({ component: Component, path }, index) => {
+      {pages.map(({ component: Component, path }, index) => {
           return <Route key={index} element={<Component />} path={path} />;
         })}
-        <Route element={<Page404 />} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
       <Footer />
     </BrowserRouter>

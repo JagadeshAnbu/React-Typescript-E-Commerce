@@ -2,11 +2,12 @@ import React from "react";
 import MyRouter from "routers/index";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
+
 function App() {
   return (
     <HelmetProvider>
       <Helmet>
-        <title>Ciseco || Shop - eCommerce React template</title>
+        <title>Conprg || Shop - eCommerce React template</title>
         <meta
           name="description"
           content="Ciseco || Shop - eCommerce React template"

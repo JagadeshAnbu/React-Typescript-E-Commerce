@@ -31,6 +31,6 @@ export interface LocationStates {
 export type PathName = keyof LocationStates;
 
 export interface Page {
-  path: PathName;
-  component: ComponentType<Object>;
+  path: PathName; // Use PathName instead of string
+  component: ComponentType<any>;
 }

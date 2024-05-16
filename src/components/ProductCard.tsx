@@ -13,6 +13,10 @@ import toast from "react-hot-toast";
 import { Transition } from "@headlessui/react";
 import ModalQuickView from "./ModalQuickView";
 import ProductStatus from "./ProductStatus";
+// import { featuredImgs } from "contains/fakeData";
+import { useCart } from "containers/CartContext";
+
+
 
 export interface ProductCardProps {
   className?: string;
@@ -35,6 +39,11 @@ const ProductCard: FC<ProductCardProps> = ({
     status,
     image,
   } = data;
+
+  const { addToCart } = useCart(); // Access addToCart function from the cart context
+
+  //console.log("Image URL:", image);
+
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
 
@@ -62,6 +71,23 @@ const ProductCard: FC<ProductCardProps> = ({
       { position: "top-right", id: "nc-product-notify", duration: 3000 }
     );
   };
+
+  // Function to handle adding the product to the cart
+  // Function to handle adding the product to the cart
+  const handleAddToCart = () => {
+    // Create a CartItem object
+    const productToAdd = {
+      id: data.id || 0, // Use data.id instead of id directly
+      name: data.name || "", // Use data.name instead of name directly
+      price: data.price || 0, // Use data.price instead of price directly
+      image: data.image || "", // Use data.image instead of image directly
+      quantity: 1, // Assuming quantity starts from 1
+    };
+    addToCart(productToAdd); // Call addToCart function with the product data
+    // Show toast or any other notification
+    toast.success("Added to cart!");
+  };
+
 
   const renderProductCartOnNotify = ({ size }: { size?: string }) => {
     return (
@@ -144,11 +170,10 @@ const ProductCard: FC<ProductCardProps> = ({
             <div
               key={index}
               onClick={() => setVariantActive(index)}
-              className={`relative w-6 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
-                variantActive === index
+              className={`relative w-6 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${variantActive === index
                   ? getBorderClass(variant.color)
                   : "border-transparent"
-              }`}
+                }`}
               title={variant.name}
             >
               <div
@@ -166,11 +191,10 @@ const ProductCard: FC<ProductCardProps> = ({
           <div
             key={index}
             onClick={() => setVariantActive(index)}
-            className={`relative w-11 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
-              variantActive === index
+            className={`relative w-11 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${variantActive === index
                 ? "border-black dark:border-slate-300"
                 : "border-transparent"
-            }`}
+              }`}
             title={variant.name}
           >
             <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
@@ -193,16 +217,20 @@ const ProductCard: FC<ProductCardProps> = ({
           className="shadow-lg"
           fontSize="text-xs"
           sizeClass="py-2 px-4"
+
           onClick={() => notifyAddTocart({ size: "XL" })}
         >
           <BagIcon className="w-3.5 h-3.5 mb-0.5" />
-          <span className="ml-1">Add to bag</span>
+          <span className="ml-1">Add to cart</span>
         </ButtonPrimary>
         <ButtonSecondary
           className="ml-1.5 bg-white hover:!bg-gray-100 hover:text-slate-900 transition-colors shadow-lg"
           fontSize="text-xs"
           sizeClass="py-2 px-4"
-          onClick={() => setShowModalQuickView(true)}
+          // onClick={() => setShowModalQuickView(true)
+          onClick={() => setShowModalQuickView(true)
+
+          }
         >
           <ArrowsPointingOutIcon className="w-3.5 h-3.5" />
           <span className="ml-1">Quick view</span>
@@ -239,15 +267,16 @@ const ProductCard: FC<ProductCardProps> = ({
         className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
         data-nc-id="ProductCard"
       >
-        <Link to={"/product-detail"} className="absolute inset-0"></Link>
+        <Link to={`/product-detail/${data.id}`} className="absolute inset-0"></Link>
 
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
-          <Link to={"/product-detail"} className="block">
+          <Link to={`/product-detail/${data.id}`} className="block">
             <NcImage
               containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
-              src={image}
+              src={"http://localhost:8081/images/" + data.image[0]}
               className="object-cover w-full h-full drop-shadow-xl"
             />
+
           </Link>
 
           <ProductStatus status={status} />

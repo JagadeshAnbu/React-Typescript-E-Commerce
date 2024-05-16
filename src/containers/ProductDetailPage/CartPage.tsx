@@ -5,8 +5,20 @@ import { Product, PRODUCTS } from "data/data";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
+import { useCart } from "containers/CartContext";
+import React, { useEffect } from 'react';
+import { CartItem } from "containers/CartContext";
+
+
 
 const CartPage = () => {
+  const { cartItems } = useCart();
+
+  useEffect(() => {
+    console.log(cartItems);
+  }, [cartItems]);
+
+
   const renderStatusSoldout = () => {
     return (
       <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
@@ -180,6 +192,26 @@ const CartPage = () => {
     );
   };
 
+  // Transform each CartItem into a Product
+  const transformedCartItems: Product[] = cartItems.map((cartItem: CartItem) => {
+    const product: Product = {
+      id: cartItem.id,
+      name: cartItem.name,
+      price: cartItem.price,
+      image: cartItem.image,
+      description: '', // Provide default value for description
+      category: '', // Provide default value for category
+      tags: [], // Provide default value for tags
+      link: '/product-detail/', // Provide default value for link
+      variants: [], // Provide default value for variants
+      variantType: undefined, // Provide default value for variantType
+      sizes: [], // Provide default value for sizes
+      allOfSizes: [], // Provide default value for allOfSizes
+      status: undefined // Provide default value for status
+    };
+    return product;
+  });
+
   return (
     <div className="nc-CartPage">
       <Helmet>
@@ -189,7 +221,7 @@ const CartPage = () => {
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
         <div className="mb-12 sm:mb-16">
           <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold ">
-            Shopping Cart
+            Shopping Cart 123
           </h2>
           <div className="block mt-3 sm:mt-5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-400">
             <Link to={"/#"} className="">
@@ -200,7 +232,7 @@ const CartPage = () => {
               Clothing Categories
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
-            <span className="underline">Shopping Cart</span>
+            <span className="underline">Shopping Cart456</span>
           </div>
         </div>
 
@@ -208,13 +240,15 @@ const CartPage = () => {
 
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 ">
-            {[
+            {/* {[
               PRODUCTS[0],
               PRODUCTS[1],
               PRODUCTS[2],
               PRODUCTS[3],
               PRODUCTS[4],
-            ].map(renderProduct)}
+            ].map(renderProduct)} */}
+            {transformedCartItems.map(renderProduct)}
+
           </div>
           <div className="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:mx-16 2xl:mx-20 flex-shrink-0"></div>
           <div className="flex-1">
