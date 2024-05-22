@@ -28,19 +28,15 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
 
   const handleClickDecrement = () => {
     if (min >= value) return;
-    setValue((state) => {
-      return state - 1;
-    });
+    setValue((prevState) => prevState - 1); // Using callback version of setValue
     onChange && onChange(value - 1);
   };
+  
   const handleClickIncrement = () => {
     if (max && max <= value) return;
-    setValue((state) => {
-      return state + 1;
-    });
+    setValue((prevState) => prevState + 1); // Using callback version of setValue
     onChange && onChange(value + 1);
   };
-
   const renderLabel = () => {
     return (
       <div className="flex flex-col">

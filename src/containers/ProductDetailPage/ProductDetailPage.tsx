@@ -55,6 +55,7 @@ interface CartItem {
   price: number;
   image: string;
   quantity: number;
+  sizes?: string[]; // Add the sizes property here
 }
 
 
@@ -158,12 +159,15 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
         name: transformedProduct.name,
         price: transformedProduct.price,
         image: transformedProduct.image,
-        quantity: qualitySelected 
+        quantity: qualitySelected,
+        sizes: sizeSelected ? [sizeSelected] : [], // Include selected size if it exists
       };
       addToCart(cartItem);
-      setIsNotifyVisible(true); 
-    }; 
+      setIsNotifyVisible(true);
+      notifyAddTocart(); // Call the notifyAddTocart function here
+    };
     
+            
   // Function to notify adding to cart
   const notifyAddTocart = () => {
     toast.custom(

@@ -1,7 +1,7 @@
 import { NoSymbolIcon, CheckIcon } from "@heroicons/react/24/outline";
 import NcInputNumber from "components/NcInputNumber";
 import Prices from "components/Prices";
-import { Product, PRODUCTS } from "data/data";
+import { Product} from "data/data";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
@@ -9,15 +9,12 @@ import { useCart } from "containers/CartContext";
 import React, { useEffect } from 'react';
 import { CartItem } from "containers/CartContext";
 
-
-
 const CartPage = () => {
   const { cartItems } = useCart();
 
   useEffect(() => {
     console.log(cartItems);
   }, [cartItems]);
-
 
   const renderStatusSoldout = () => {
     return (
@@ -38,8 +35,8 @@ const CartPage = () => {
   };
 
   const renderProduct = (item: Product, index: number) => {
-    const { image, price, name } = item;
-
+    const { id, image, price, name, sizes } = item;
+  
     return (
       <div
         key={index}
@@ -47,7 +44,7 @@ const CartPage = () => {
       >
         <div className="relative h-36 w-24 sm:w-32 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
+            src={"http://localhost:8081/images/"+image}
             alt={name}
             className="h-full w-full object-contain object-center"
           />
@@ -140,7 +137,7 @@ const CartPage = () => {
                       />
                     </svg>
 
-                    <span>{`2XL`}</span>
+                    <span>{`Sizes`}</span>
                   </div>
                 </div>
 
@@ -192,8 +189,10 @@ const CartPage = () => {
     );
   };
 
+
   // Transform each CartItem into a Product
   const transformedCartItems: Product[] = cartItems.map((cartItem: CartItem) => {
+    debugger
     const product: Product = {
       id: cartItem.id,
       name: cartItem.name,
@@ -240,15 +239,7 @@ const CartPage = () => {
 
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 ">
-            {/* {[
-              PRODUCTS[0],
-              PRODUCTS[1],
-              PRODUCTS[2],
-              PRODUCTS[3],
-              PRODUCTS[4],
-            ].map(renderProduct)} */}
             {transformedCartItems.map(renderProduct)}
-
           </div>
           <div className="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:mx-16 2xl:mx-20 flex-shrink-0"></div>
           <div className="flex-1">

@@ -1,13 +1,15 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 // Define types for Cart Item and Context
- export interface CartItem {
+export interface CartItem {
   id: number;
   name: string;
   price: number;
   image: string;
   quantity: number;
+  sizes?: string[]; // Make sizes property optional
 }
+
 
 interface CartContextType {
   cartItems: CartItem[];
@@ -31,7 +33,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             : item
         );
       } else {
-        return [...prevItems, { ...product, quantity: 1 }];
+        return [...prevItems, { ...product, quantity:1}];
       }
     });
   };

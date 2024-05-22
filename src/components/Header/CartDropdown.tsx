@@ -1,19 +1,22 @@
 import { Popover, Transition } from "@headlessui/react";
 import Prices from "components/Prices";
-import { Product, PRODUCTS } from "data/data";
+//import { Product, PRODUCTS } from "data/data";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
+import { useCart, CartItem } from "containers/CartContext";
 
 export default function CartDropdown() {
-  const renderProduct = (item: Product, index: number, close: () => void) => {
-    const { name, price, image } = item;
+  const { cartItems } = useCart(); // Access cartItems from CartContext
+
+  const renderProduct = (item: CartItem, index: number, close: () => void) => {
+    const { name, price, image, quantity } = item;
     return (
       <div key={index} className="flex py-5 last:pb-0">
         <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
+            src={"http://localhost:8081/images/"+image}
             alt={name}
             className="h-full w-full object-contain object-center"
           />
@@ -43,7 +46,7 @@ export default function CartDropdown() {
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
-            <p className="text-gray-500 dark:text-slate-400">{`Qty 1`}</p>
+            <p className="text-gray-500 dark:text-slate-400">{`Qty ${quantity}`}</p>
 
             <div className="flex">
               <button
@@ -128,9 +131,10 @@ export default function CartDropdown() {
                   <div className="max-h-[60vh] p-5 overflow-y-auto hiddenScrollbar">
                     <h3 className="text-xl font-semibold">Shopping cart</h3>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                      {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(
+                      {/* {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(
                         (item, index) => renderProduct(item, index, close)
-                      )}
+                      )} */}
+                    {cartItems.map((item, index) => renderProduct(item, index, close))}
                     </div>
                   </div>
                   <div className="bg-neutral-50 dark:bg-slate-900 p-5">

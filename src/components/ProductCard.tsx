@@ -17,7 +17,6 @@ import ProductStatus from "./ProductStatus";
 import { useCart } from "containers/CartContext";
 
 
-
 export interface ProductCardProps {
   className?: string;
   data?: Product;
