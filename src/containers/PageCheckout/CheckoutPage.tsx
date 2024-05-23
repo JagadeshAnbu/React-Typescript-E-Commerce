@@ -10,14 +10,35 @@ import Input from "shared/Input/Input";
 import ContactInfo from "./ContactInfo";
 import PaymentMethod from "./PaymentMethod";
 import ShippingAddress from "./ShippingAddress";
+import { useCart } from "containers/CartContext";
+
 
 const CheckoutPage = () => {
+  const { cartItems } = useCart();
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
 
+
+    // Define Product interface
+    interface Product {
+      image: string;
+      price: number;
+      name: string;
+      // Add any other properties required by renderProduct function
+    }
+  
+    // Map cartItems to Product objects
+    const products: Product[] = cartItems.map((item) => ({
+      image: item.image,
+      price: item.price,
+      name: item.name,
+      // Add any other properties required by renderProduct function
+    }));
+  
+
   const handleScrollToEl = (id: string) => {
-    const element = document.getElementById(id);
+    const element = document.getElementById(id); 
     setTimeout(() => {
       element?.scrollIntoView({ behavior: "smooth" });
     }, 80);
@@ -25,12 +46,14 @@ const CheckoutPage = () => {
 
   const renderProduct = (item: Product, index: number) => {
     const { image, price, name } = item;
+    console.log(renderProduct);
+
 
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
         <div className="relative h-36 w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
+            src={"http://localhost:8081/images/"+image}
             alt={name}
             className="h-full w-full object-contain object-center"
           />
@@ -171,6 +194,21 @@ const CheckoutPage = () => {
     );
   };
 
+  // Calculate Subtotal
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  // Shipping estimate (assuming $5.00 per item)
+  const shippingEstimate = 5.00 * cartItems.length;
+
+  // Tax estimate (assuming 10% tax rate)
+  const taxRate = 0.1;
+  const taxEstimate = subtotal * taxRate;
+
+  // Order total
+  const orderTotal = subtotal + shippingEstimate + taxEstimate;
+
+
+
   const renderLeft = () => {
     return (
       <div className="space-y-8">
@@ -248,7 +286,7 @@ const CheckoutPage = () => {
           <div className="w-full lg:w-[36%] ">
             <h3 className="text-lg font-semibold">Order summary</h3>
             <div className="mt-8 divide-y divide-slate-200/70 dark:divide-slate-700 ">
-              {[PRODUCTS[0], PRODUCTS[2], PRODUCTS[3]].map(renderProduct)}
+              {cartItems.map(renderProduct)}
             </div>
 
             <div className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700 ">
@@ -265,24 +303,24 @@ const CheckoutPage = () => {
               <div className="mt-4 flex justify-between py-2.5">
                 <span>Subtotal</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  $249.00
+                  {subtotal}
                 </span>
               </div>
               <div className="flex justify-between py-2.5">
                 <span>Shipping estimate</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  $5.00
+                  ${shippingEstimate}
                 </span>
               </div>
               <div className="flex justify-between py-2.5">
                 <span>Tax estimate</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  $24.90
+                  ${taxEstimate}
                 </span>
               </div>
               <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                 <span>Order total</span>
-                <span>$276.00</span>
+                <span>${orderTotal}</span>
               </div>
             </div>
             <ButtonPrimary href="/account-my-order" className="mt-8 w-full">

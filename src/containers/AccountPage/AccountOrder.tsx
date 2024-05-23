@@ -2,15 +2,17 @@ import Prices from "components/Prices";
 import { PRODUCTS } from "data/data";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
 import CommonLayout from "./CommonLayout";
+import { useCart, CartItem } from "containers/CartContext";
 
 const AccountOrder = () => {
+  const { cartItems } = useCart(); // Using useCart hook to access cartItems from CartContext
   const renderProductItem = (product: any, index: number) => {
     const { image, name } = product;
     return (
       <div key={index} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
         <div className="h-24 w-16 sm:w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
+            src={"http://localhost:8081/images/"+image}
             alt={name}
             className="h-full w-full object-cover object-center"
           />
@@ -32,7 +34,7 @@ const AccountOrder = () => {
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
             <p className="text-gray-500 dark:text-slate-400 flex items-center">
-              <span className="hidden sm:inline-block">Qty</span>
+              <span className="hidden sm:inline-block">Qty:{product.quantity}</span>
               <span className="inline-block sm:hidden">x</span>
               <span className="ml-2">1</span>
             </p>
@@ -73,7 +75,9 @@ const AccountOrder = () => {
           </div>
         </div>
         <div className="border-t border-slate-200 dark:border-slate-700 p-2 sm:p-8 divide-y divide-y-slate-200 dark:divide-slate-700">
-          {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(renderProductItem)}
+          {/* {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(renderProductItem)} */}
+          {cartItems.map(renderProductItem)} {/* Mapping over cartItems */}
+
         </div>
       </div>
     );

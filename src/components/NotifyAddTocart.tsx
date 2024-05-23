@@ -3,6 +3,8 @@ import Prices from "components/Prices";
 import { PRODUCTS } from "data/data";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "containers/CartContext";
+
 
 interface Props {
   show: boolean;
@@ -20,14 +22,16 @@ const NotifyAddTocart: FC<Props> = ({
   sizeSelected,
 }) => {
   const { name, price, variants } = PRODUCTS[0];
+  const { cartItems } = useCart(); // Accessing cartItems from CartContext
+
 
   const renderProductCartOnNotify = () => {
     return (
       <div className="flex ">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={productImage}
-            alt={name}
+            src={"http://localhost:8081/images/" + productImage}
+            // src={productImage} alt={name}
             className="h-full w-full object-contain object-center"
           />
         </div>

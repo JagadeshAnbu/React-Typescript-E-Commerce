@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
+
 // Define types for Cart Item and Context
 export interface CartItem {
   id: number;

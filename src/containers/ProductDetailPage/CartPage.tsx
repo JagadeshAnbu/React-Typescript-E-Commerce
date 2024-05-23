@@ -16,6 +16,21 @@ const CartPage = () => {
     console.log(cartItems);
   }, [cartItems]);
 
+  // Calculate Subtotal
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  // Shipping estimate (assuming $5.00 per item)
+  const shippingEstimate = 5.00 * cartItems.length;
+
+  // Tax estimate (assuming 10% tax rate)
+  const taxRate = 0.1;
+  const taxEstimate = subtotal * taxRate;
+
+  // Order total
+  const orderTotal = subtotal + shippingEstimate + taxEstimate;
+
+
+
   const renderStatusSoldout = () => {
     return (
       <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
@@ -192,7 +207,6 @@ const CartPage = () => {
 
   // Transform each CartItem into a Product
   const transformedCartItems: Product[] = cartItems.map((cartItem: CartItem) => {
-    debugger
     const product: Product = {
       id: cartItem.id,
       name: cartItem.name,
@@ -249,24 +263,24 @@ const CartPage = () => {
                 <div className="flex justify-between pb-4">
                   <span>Subtotal</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    $249.00
+                    ${subtotal}
                   </span>
                 </div>
                 <div className="flex justify-between py-4">
                   <span>Shpping estimate</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    $5.00
+                    ${shippingEstimate}
                   </span>
                 </div>
                 <div className="flex justify-between py-4">
                   <span>Tax estimate</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    $24.90
+                    ${taxEstimate}
                   </span>
                 </div>
                 <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                   <span>Order total</span>
-                  <span>$276.00</span>
+                  <span>${orderTotal}</span>
                 </div>
               </div>
               <ButtonPrimary href="/checkout" className="mt-8 w-full">
