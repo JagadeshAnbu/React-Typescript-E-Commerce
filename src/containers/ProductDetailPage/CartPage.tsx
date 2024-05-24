@@ -155,7 +155,7 @@ const orderTotal = parseFloat((subtotal + shippingEstimate + taxEstimate).toFixe
                       />
                     </svg>
 
-                    <span>{`Size: ₹{sizes}`}</span>
+                    <span>{`Size: ${sizes}`}</span>
                   </div>
                 </div>
 

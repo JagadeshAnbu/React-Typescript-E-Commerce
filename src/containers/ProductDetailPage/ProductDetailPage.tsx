@@ -204,7 +204,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
             <div
               key={index}
               onClick={() => setVariantActive(index)}
-              className={`relative flex-1 max-w-[75px] h-10 sm:h-11 rounded-full border-2 cursor-pointer ₹{variantActive === index
+              className={`relative flex-1 max-w-[75px] h-10 sm:h-11 rounded-full border-2 cursor-pointer ${variantActive === index
                   ? "border-primary-6000 dark:border-primary-500"
                   : "border-transparent"
                 }`}
@@ -253,10 +253,10 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
               <div
                 key={index}
                 className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center 
-                  text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ₹{sizeOutStock
+                  text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${sizeOutStock
                     ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
                     : "cursor-pointer"
-                  } ₹{isActive
+                  } ${isActive
                     ? "bg-primary-6000 border-primary-6000 text-white hover:bg-primary-6000"
                     : "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-neutral-50 dark:hover:bg-neutral-700"
                   }`}
@@ -328,7 +328,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
-            {/* <div className="flex text-xl font-semibold">₹112.00</div> */}
+            {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
               price={transformedProduct.price}
@@ -481,7 +481,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
 
 
   return (
-    <div className={`nc-ProductDetailPage ₹{className}`}>
+    <div className={`nc-ProductDetailPage ${className}`}>
       {/* MAIn */}
       <main className="container mt-5 lg:mt-11">
         <div className="lg:flex">

@@ -207,10 +207,10 @@ const CheckoutPage = () => {
 
   // Tax estimate (assuming 10% tax rate)
   const taxRate = 0.1;
-  const taxEstimate = subtotal * taxRate;
+  const taxEstimate = Math.floor(subtotal * taxRate);
 
   // Order total
-  const orderTotal = subtotal + shippingEstimate + taxEstimate;
+  const orderTotal = Math.floor(subtotal + shippingEstimate + taxEstimate);
 
 
 

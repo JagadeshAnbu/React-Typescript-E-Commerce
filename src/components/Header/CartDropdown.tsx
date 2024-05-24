@@ -51,7 +51,7 @@ export default function CartDropdown() {
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
-            <p className="text-gray-500 dark:text-slate-400">{`Qty ₹{quantity}`}</p>
+            <p className="text-gray-500 dark:text-slate-400">{`Qty ${quantity}`}</p>
 
             <div className="flex">
               <button
@@ -73,7 +73,7 @@ export default function CartDropdown() {
         <>
           <Popover.Button
             className={`
-                ₹{open ? "" : "text-opacity-90"}
+                ${open ? "" : "text-opacity-90"}
                  group w-10 h-10 sm:w-12 sm:h-12 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative`}
           >
             <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-500 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
@@ -150,7 +150,7 @@ export default function CartDropdown() {
                           Shipping and taxes calculated at checkout.
                         </span>
                       </span>
-                      <span className="">₹{subtotal.toFixed(2)}</span>
+                      <span className="">${subtotal.toFixed(2)}</span>
                     </p>
                     <div className="flex space-x-2 mt-5">
                       <ButtonSecondary
