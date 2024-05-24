@@ -19,15 +19,15 @@ const CartPage = () => {
   // Calculate Subtotal
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  // Shipping estimate (assuming $5.00 per item)
+  // Shipping estimate (assuming ₹5.00 per item)
   const shippingEstimate = 5.00 * cartItems.length;
 
   // Tax estimate (assuming 10% tax rate)
   const taxRate = 0.1;
-  const taxEstimate = subtotal * taxRate;
+  const taxEstimate = parseFloat((subtotal * taxRate).toFixed(2));
 
   // Order total
-  const orderTotal = subtotal + shippingEstimate + taxEstimate;
+const orderTotal = parseFloat((subtotal + shippingEstimate + taxEstimate).toFixed(2));
 
 
 
@@ -50,6 +50,7 @@ const CartPage = () => {
   };
 
   const renderProduct = (item: Product, index: number) => {
+    debugger;
     const { id, image, price, name, sizes } = item;
   
     return (
@@ -120,6 +121,8 @@ const CartPage = () => {
                     <span>{`Black`}</span>
                   </div>
                   <span className="mx-4 border-l border-slate-200 dark:border-slate-700 "></span>
+
+                  {/* SIZE RENDERING*/}
                   <div className="flex items-center space-x-1.5">
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
                       <path
@@ -152,7 +155,7 @@ const CartPage = () => {
                       />
                     </svg>
 
-                    <span>{`Sizes`}</span>
+                    <span>{`Size: ₹{sizes}`}</span>
                   </div>
                 </div>
 
@@ -218,7 +221,7 @@ const CartPage = () => {
       link: '/product-detail/', // Provide default value for link
       variants: [], // Provide default value for variants
       variantType: undefined, // Provide default value for variantType
-      sizes: [], // Provide default value for sizes
+      sizes: cartItem.sizes, // Pass the size information
       allOfSizes: [], // Provide default value for allOfSizes
       status: undefined // Provide default value for status
     };
@@ -263,24 +266,24 @@ const CartPage = () => {
                 <div className="flex justify-between pb-4">
                   <span>Subtotal</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    ${subtotal}
+                    ₹{subtotal}
                   </span>
                 </div>
                 <div className="flex justify-between py-4">
                   <span>Shpping estimate</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    ${shippingEstimate}
+                    ₹{shippingEstimate}
                   </span>
                 </div>
                 <div className="flex justify-between py-4">
                   <span>Tax estimate</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    ${taxEstimate}
+                    ₹{taxEstimate}
                   </span>
                 </div>
                 <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                   <span>Order total</span>
-                  <span>${orderTotal}</span>
+                  <span>₹{orderTotal}</span>
                 </div>
               </div>
               <ButtonPrimary href="/checkout" className="mt-8 w-full">

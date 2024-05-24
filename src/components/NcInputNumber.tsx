@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { useCart } from "containers/CartContext";
 
 export interface NcInputNumberProps {
   className?: string;
@@ -20,11 +21,17 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
   label,
   desc,
 }) => {
+  const { cartItems } = useCart();
   const [value, setValue] = useState(defaultValue);
 
+
+  // Set defaultValue based on cartItems once cartItems data is available
   useEffect(() => {
-    setValue(defaultValue);
-  }, [defaultValue]);
+    if (cartItems.length > 0) {
+      setValue(cartItems[0].quantity);
+    }
+  }, [cartItems, defaultValue]);
+
 
   const handleClickDecrement = () => {
     if (min >= value) return;

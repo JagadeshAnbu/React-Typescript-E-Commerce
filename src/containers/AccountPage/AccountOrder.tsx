@@ -1,5 +1,5 @@
 import Prices from "components/Prices";
-import { PRODUCTS } from "data/data";
+// import { PRODUCTS } from "data/data";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
 import CommonLayout from "./CommonLayout";
 import { useCart, CartItem } from "containers/CartContext";
@@ -26,7 +26,7 @@ const AccountOrder = () => {
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span>{"Natural"}</span>
                   <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
-                  <span>{"XL"}</span>
+                  <span>Size:{product.sizes}</span>
                 </p>
               </div>
               <Prices className="mt-0.5 ml-2" />
@@ -34,9 +34,9 @@ const AccountOrder = () => {
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
             <p className="text-gray-500 dark:text-slate-400 flex items-center">
-              <span className="hidden sm:inline-block">Qty:{product.quantity}</span>
-              <span className="inline-block sm:hidden">x</span>
-              <span className="ml-2">1</span>
+              <span className="hidden sm:inline-block">{"Qty:"}{product.quantity}</span>
+              {/* <span className="inline-block sm:hidden">x</span>
+              <span className="ml-2">1</span> */}
             </p>
 
             <div className="flex">
@@ -77,7 +77,6 @@ const AccountOrder = () => {
         <div className="border-t border-slate-200 dark:border-slate-700 p-2 sm:p-8 divide-y divide-y-slate-200 dark:divide-slate-700">
           {/* {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(renderProductItem)} */}
           {cartItems.map(renderProductItem)} {/* Mapping over cartItems */}
-
         </div>
       </div>
     );
@@ -90,7 +89,7 @@ const AccountOrder = () => {
           {/* HEADING */}
           <h2 className="text-2xl sm:text-3xl font-semibold">Order History</h2>
           {renderOrder()}
-          {renderOrder()}
+          {/* {renderOrder()} */}
         </div>
       </CommonLayout>
     </div>

@@ -10,8 +10,13 @@ import { useCart, CartItem } from "containers/CartContext";
 export default function CartDropdown() {
   const { cartItems } = useCart(); // Access cartItems from CartContext
 
+    // Calculate subtotal
+    const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
   const renderProduct = (item: CartItem, index: number, close: () => void) => {
-    const { name, price, image, quantity } = item;
+    const { name, price, image, quantity, sizes } = item;
+    console.log("render product:", renderProduct);
+
     return (
       <div key={index} className="flex py-5 last:pb-0">
         <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
@@ -39,14 +44,14 @@ export default function CartDropdown() {
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span>{`Natural`}</span>
                   <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
-                  <span>{"XL"}</span>
+                  <span>{sizes}</span>
                 </p>
               </div>
               <Prices price={price} className="mt-0.5" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
-            <p className="text-gray-500 dark:text-slate-400">{`Qty ${quantity}`}</p>
+            <p className="text-gray-500 dark:text-slate-400">{`Qty ₹{quantity}`}</p>
 
             <div className="flex">
               <button
@@ -68,7 +73,7 @@ export default function CartDropdown() {
         <>
           <Popover.Button
             className={`
-                ${open ? "" : "text-opacity-90"}
+                ₹{open ? "" : "text-opacity-90"}
                  group w-10 h-10 sm:w-12 sm:h-12 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative`}
           >
             <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-500 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
@@ -145,7 +150,7 @@ export default function CartDropdown() {
                           Shipping and taxes calculated at checkout.
                         </span>
                       </span>
-                      <span className="">$299.00</span>
+                      <span className="">₹{subtotal.toFixed(2)}</span>
                     </p>
                     <div className="flex space-x-2 mt-5">
                       <ButtonSecondary

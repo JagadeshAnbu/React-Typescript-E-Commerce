@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-
 // Define types for Cart Item and Context
 export interface CartItem {
   id: number;
@@ -17,6 +16,7 @@ interface CartContextType {
   addToCart: (product: CartItem) => void;
 }
 
+
 // Create the context
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -26,15 +26,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (product: CartItem) => {
     setCartItems((prevItems) => {
+      debugger;
       const existingItem = prevItems.find(item => item.id === product.id);
       if (existingItem) {
         return prevItems.map(item =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + product.quantity}
             : item
         );
       } else {
-        return [...prevItems, { ...product, quantity:1}];
+        return [...prevItems, { ...product, quantity:product.quantity, sizes: product.sizes }];
       }
     });
   };
@@ -54,6 +55,5 @@ export const useCart = () => {
   }
   return context;
 };
-
 
 export { CartContext };
