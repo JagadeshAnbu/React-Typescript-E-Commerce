@@ -12,6 +12,7 @@ import PaymentMethod from "./PaymentMethod";
 import ShippingAddress from "./ShippingAddress";
 import { useCart } from "containers/CartContext";
 import { CartItem } from "containers/CartContext";
+import PayPalButton from "./PayPalButton";
 
 
 
@@ -212,6 +213,10 @@ const CheckoutPage = () => {
   // Order total
   const orderTotal = Math.floor(subtotal + shippingEstimate + taxEstimate);
 
+  const handleSuccess = (details: any) => {
+    console.log('Payment Successful:', details);
+    // Handle successful payment here, e.g., save order details to backend
+  };
 
 
   const renderLeft = () => {
@@ -330,6 +335,7 @@ const CheckoutPage = () => {
                 <span>₹{orderTotal}</span>
               </div>
             </div>
+            <PayPalButton amount={orderTotal} onSuccess={handleSuccess} />
             <ButtonPrimary href="/account-my-order" className="mt-8 w-full">
               Confirm order
             </ButtonPrimary>

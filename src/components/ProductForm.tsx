@@ -102,31 +102,39 @@ const ProductForm: React.FC = () => {
         const { value } = e.target;
         setFormData((prevData) => {
             const updatedVariation = [...prevData.variation];
-            if (!updatedVariation[variationIndex].size) {
-                updatedVariation[variationIndex].size = [];
-            }
-            while (updatedVariation[variationIndex].size.length <= sizeIndex) {
-                updatedVariation[variationIndex].size.push({ name: '', stock: '' });
-            }
-            updatedVariation[variationIndex].size[sizeIndex][property] = value;
+            const updatedSizes = updatedVariation[variationIndex].size.map((size, index) => {
+                if (index === sizeIndex) {
+                    return { ...size, [property]: value };
+                }
+                return size;
+            });
+            updatedVariation[variationIndex] = {
+                ...updatedVariation[variationIndex],
+                size: updatedSizes
+            };
             return {
                 ...prevData,
                 variation: updatedVariation,
             };
         });
     };
+    
 
     const handleAddSize = (variationIndex: number) => {
         setFormData((prevData) => {
             const updatedVariation = [...prevData.variation];
-            updatedVariation[variationIndex].size.push({ name: '', stock: '' });
+            const newSizeArray = [...updatedVariation[variationIndex].size, { name: '', stock: '' }];
+            updatedVariation[variationIndex] = {
+                ...updatedVariation[variationIndex],
+                size: newSizeArray
+            };
             return {
                 ...prevData,
                 variation: updatedVariation,
             };
         });
     };
-
+    
 
     const handleCategorySelection = (selectedCategory: string | null) => {
         if (selectedCategory) {
@@ -156,13 +164,14 @@ const ProductForm: React.FC = () => {
 
     const handleColorChange = (e: ChangeEvent<HTMLInputElement>, variationIndex: number) => {
         const { value } = e.target;
-        const updatedFormData = { ...formData };
-        if (updatedFormData.variation && updatedFormData.variation.length > variationIndex) {
-            updatedFormData.variation[variationIndex].color = value;
-            setFormData(updatedFormData);
-        } else {
-            console.error('Variation index out of range or formData.variation is undefined');
-        }
+        setFormData((prevData) => {
+            const updatedVariation = [...prevData.variation];
+            updatedVariation[variationIndex].color = value;
+            return {
+                ...prevData,
+                variation: updatedVariation,
+            };
+        });
     };
 
     const handleSave = async (e: FormEvent) => {
@@ -355,7 +364,6 @@ const ProductForm: React.FC = () => {
                             >
                                 Add Size
                             </button>
-
 
                             {variation.size.map((size, sizeIndex) => (
                                 <div key={sizeIndex} className='mb-2'>

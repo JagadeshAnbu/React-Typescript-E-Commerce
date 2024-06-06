@@ -6,6 +6,7 @@ import ButtonPrimary from "shared/Button/ButtonPrimary";
 import facebookSvg from "images/Facebook.svg";
 import twitterSvg from "images/Twitter.svg";
 import googleSvg from "images/Google.svg";
+import toast from "react-hot-toast";
 
 export interface PageLoginProps {
   className?: string;
@@ -31,16 +32,26 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
         },
         body: JSON.stringify(userData)
       });
-
+    
       if (response.ok) {
         console.log("Login successful!");
+        toast.success("Login Successful", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        } as any);
+        
       } else {
         console.error("Login failed.");
       }
     } catch (error) {
       console.error("Error:", error);
     }
-  };
+  }
 
   const loginSocials = [
     {

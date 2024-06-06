@@ -10,12 +10,20 @@ export interface CartItem {
   sizes?: string[]; // Make sizes property optional
 }
 
+interface User {
+  username: string;
+  location: string;
+  avatarUrl: string;
+}
 
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (product: CartItem) => void;
-}
 
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+
+}
 
 // Create the context
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -23,6 +31,8 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 // Create the provider component
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+
 
   const addToCart = (product: CartItem) => {
     setCartItems((prevItems) => {
@@ -41,7 +51,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, user, setUser }}>
       {children}
     </CartContext.Provider>
   );

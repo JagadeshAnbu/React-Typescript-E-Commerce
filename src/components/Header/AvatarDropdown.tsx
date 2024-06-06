@@ -4,9 +4,31 @@ import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "shared/Avatar/Avatar";
 import SwitchDarkMode2 from "shared/SwitchDarkMode/SwitchDarkMode2";
+import { useCart } from "containers/CartContext";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function AvatarDropdown() {
+  const { user } = useCart();
+
+  useEffect(() => {
+    console.log("User Details:", user);
+    if (user) {
+      toast.success(`Welcome, ${user.username}!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+
+  }, [user]);
+
   return (
+
     <div className="AvatarDropdown ">
       <Popover className="relative">
         {({ open, close }) => (
@@ -52,7 +74,7 @@ export default function AvatarDropdown() {
                       <Avatar imgUrl={avatarImgs[7]} sizeClass="w-12 h-12" />
 
                       <div className="flex-grow">
-                        <h4 className="font-semibold">Eden Smith</h4>
+                      <h4 className="font-semibold">{user?.username ?? 'Guest'}</h4>
                         <p className="text-xs mt-0.5">Los Angeles, CA</p>
                       </div>
                     </div>
