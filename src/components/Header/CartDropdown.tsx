@@ -8,13 +8,17 @@ import ButtonSecondary from "shared/Button/ButtonSecondary";
 import { useCart, CartItem } from "containers/CartContext";
 
 export default function CartDropdown() {
-  const { cartItems } = useCart(); // Access cartItems from CartContext
+  const { cartItems, removeFromCart } = useCart(); // Access cartItems from CartContext
 
-    // Calculate subtotal
-    const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  // Calculate subtotal
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const handleRemove = (id: number) => {
+    removeFromCart(id);
+  };
 
   const renderProduct = (item: CartItem, index: number, close: () => void) => {
-    const { name, price, image, quantity, sizes } = item;
+    const { id, name, price, image, quantity, sizes } = item;
     console.log("render product:", renderProduct);
 
     return (
@@ -56,6 +60,7 @@ export default function CartDropdown() {
             <div className="flex">
               <button
                 type="button"
+                onClick={() => handleRemove(id)}
                 className="font-medium text-primary-6000 dark:text-primary-500 "
               >
                 Remove

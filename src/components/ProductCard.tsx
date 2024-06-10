@@ -13,7 +13,6 @@ import toast from "react-hot-toast";
 import { Transition } from "@headlessui/react";
 import ModalQuickView from "./ModalQuickView";
 import ProductStatus from "./ProductStatus";
-// import { featuredImgs } from "contains/fakeData";
 import { useCart } from "containers/CartContext";
 
 
@@ -93,7 +92,7 @@ const ProductCard: FC<ProductCardProps> = ({
       <div className="flex ">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
+            src={"http://localhost:8081/images/" + image[0]}
             alt={name}
             className="h-full w-full object-cover object-center"
           />
@@ -272,7 +271,8 @@ const ProductCard: FC<ProductCardProps> = ({
           <Link to={`/product-detail/${data.id}`} className="block">
             <NcImage
               containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
-              src={"http://localhost:8081/images/" + data.image[0]}
+              // src={"http://localhost:8081/images/" + data.image[0]}
+              src={"http://localhost:8081/images/" + image[0]}
               className="object-cover w-full h-full drop-shadow-xl"
             />
 

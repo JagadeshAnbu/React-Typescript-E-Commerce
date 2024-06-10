@@ -1,23 +1,38 @@
 import { NoSymbolIcon, CheckIcon } from "@heroicons/react/24/outline";
 import NcInputNumber from "components/NcInputNumber";
 import Prices from "components/Prices";
-import { Product} from "data/data";
+import { Product } from "data/data";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import { useCart } from "containers/CartContext";
-import React, { useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { CartItem } from "containers/CartContext";
 
 const CartPage = () => {
-  const { cartItems } = useCart();
+  const { cartItems, removeFromCart, updateCartItemQuantity } = useCart();
+  const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
 
+  // Initialize quantities state from cartItems
   useEffect(() => {
-    console.log(cartItems);
+    const initialQuantities = cartItems.reduce((acc, item) => {
+      acc[item.id] = item.quantity;
+      return acc;
+    }, {} as { [key: number]: number });
+    setQuantities(initialQuantities);
   }, [cartItems]);
 
+  const handleQuantityChange = (id: number, quantity: number) => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [id]: quantity,
+    }));
+    updateCartItemQuantity(id, quantity); // Update cart context as well
+  };
+
+
   // Calculate Subtotal
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price * quantities[item.id], 0);
 
   // Shipping estimate (assuming ₹5.00 per item)
   const shippingEstimate = 5.00 * cartItems.length;
@@ -27,8 +42,7 @@ const CartPage = () => {
   const taxEstimate = parseFloat((subtotal * taxRate).toFixed(2));
 
   // Order total
-const orderTotal = parseFloat((subtotal + shippingEstimate + taxEstimate).toFixed(2));
-
+  const orderTotal = parseFloat((subtotal + shippingEstimate + taxEstimate).toFixed(2));
 
 
   const renderStatusSoldout = () => {
@@ -49,10 +63,16 @@ const orderTotal = parseFloat((subtotal + shippingEstimate + taxEstimate).toFixe
     );
   };
 
+  const handleRemove = (id: number) => {
+    removeFromCart(id);
+  };
+
+
   const renderProduct = (item: Product, index: number) => {
     debugger;
     const { id, image, price, name, sizes } = item;
-  
+    const quantity = quantities[id] || 1;
+
     return (
       <div
         key={index}
@@ -60,7 +80,7 @@ const orderTotal = parseFloat((subtotal + shippingEstimate + taxEstimate).toFixe
       >
         <div className="relative h-36 w-24 sm:w-32 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={"http://localhost:8081/images/"+image}
+            src={"http://localhost:8081/images/" + image}
             alt={name}
             className="h-full w-full object-contain object-center"
           />
@@ -160,19 +180,20 @@ const orderTotal = parseFloat((subtotal + shippingEstimate + taxEstimate).toFixe
                 </div>
 
                 <div className="mt-3 flex justify-between w-full sm:hidden relative">
-                  <select
+                <select
                     name="qty"
                     id="qty"
-                    className="form-select text-sm rounded-md py-1 border-slate-200 dark:border-slate-700 relative z-10 dark:bg-slate-800 "
+                    className="form-select text-sm rounded-md py-1 border-slate-200 dark:border-slate-700 relative z-10 dark:bg-slate-800"
+                    value={quantity}
+                    onChange={(e) => handleQuantityChange(id, parseInt(e.target.value))}
                   >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
+                    {[...Array(10)].map((_, i) => (
+                      <option key={i + 1} value={i + 1}>
+                        {i + 1}
+                      </option>
+                    ))}
                   </select>
+
                   <Prices
                     contentClass="py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium h-full"
                     price={price}
@@ -181,7 +202,11 @@ const orderTotal = parseFloat((subtotal + shippingEstimate + taxEstimate).toFixe
               </div>
 
               <div className="hidden sm:block text-center relative">
-                <NcInputNumber className="relative z-10" />
+                <NcInputNumber
+                  className="relative z-10"
+                  value={quantity}
+                  onChange={(newQty) => handleQuantityChange(id, newQty)}
+                />
               </div>
 
               <div className="hidden flex-1 sm:flex justify-end">
@@ -195,12 +220,13 @@ const orderTotal = parseFloat((subtotal + shippingEstimate + taxEstimate).toFixe
               ? renderStatusSoldout()
               : renderStatusInstock()}
 
-            <a
-              href="##"
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+            <button
+              onClick={() => handleRemove(id)}
+              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm"
             >
+
               <span>Remove</span>
-            </a>
+              </button>
           </div>
         </div>
       </div>

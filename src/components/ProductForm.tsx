@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+
 interface Size {
     name: string;
     stock: string;
@@ -59,6 +60,8 @@ const ProductForm: React.FC = () => {
 
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [tagInput, setTagInput] = useState<string>('');
+
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -68,6 +71,7 @@ const ProductForm: React.FC = () => {
         }));
     };
 
+    
     const handleVariationImageChange = (variationIndex: number, e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -153,6 +157,11 @@ const ProductForm: React.FC = () => {
             }));
         }
     };
+
+    const handleTagInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setTagInput(e.target.value);
+    };
+    
 
     const handleDateChange = (date: Date | null) => {
         setSelectedDate(date);
@@ -429,8 +438,9 @@ const ProductForm: React.FC = () => {
                             placeholder='Tags'
                             id='tag'
                             name='tag'
-                            value={formData.tag.join(', ')}
-                            readOnly
+                            onChange={handleTagInputChange}
+                            value={tagInput}
+                            // readOnly
                             className='mt-1 block w-full px-3 py-2 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                         />
                     </div>
@@ -444,7 +454,7 @@ const ProductForm: React.FC = () => {
                 </form>
             </div>
         </Fragment>
-    );
+    )
 };
 
 export default ProductForm;

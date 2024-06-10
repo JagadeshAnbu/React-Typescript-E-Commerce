@@ -58,7 +58,7 @@ export const pages: Page[] = [
   //
   { path: "/cart", component: CartPage },
   { path: "/checkout", component: CheckoutPage },
-  { path: "/addproduct", component: ProductForm },
+  { path: "/add-product", component: ProductForm },
   //
   // { path: "/blog", component: BlogPage },
   // { path: "/blog-single", component: BlogSingle },

@@ -126,6 +126,9 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
   const [transformedProduct, setTransformedProduct] = useState<Product>({} as Product);
   const [cart, setCart] = useState<Product[]>([]);
   const [isNotifyVisible, setIsNotifyVisible] = useState(false);
+  const [price, setPrice] = useState<number>(0);
+  const [name, setName] = useState<string>("");
+
 
 
   // Fetch product data on component mount
@@ -146,6 +149,8 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
       setVariants(transformedProduct.variants || []);
       setStatus(transformedProduct.status);
       setAllOfSizes(transformedProduct.allOfSizes || []);
+      setPrice(transformedProduct.price);
+      setName(transformedProduct.name);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -177,11 +182,14 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
           show={t.visible}
           sizeSelected={sizeSelected}
           variantActive={variantActive}
+          price={price} // Ensure this matches the Props interface
+          name={name} // Ensure this matches the Props interface
         />
       ),
       { position: "top-right", id: "nc-product-notify", duration: 3000 }
     );
   };
+  
 
   // Function to render product variants
   const renderVariants = () => {
@@ -199,7 +207,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
             </span>
           </span>
         </label>
-        <div className="flex mt-3">
+        {/* <div className="flex mt-3">
           {variants.map((variant, index) => (
             <div
               key={index}
@@ -218,7 +226,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -367,7 +375,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }): Reac
         <div className="flex space-x-3.5">
           <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
             <NcInputNumber
-              defaultValue={qualitySelected}
+              value={qualitySelected}
               onChange={setQualitySelected}
             />
           </div>

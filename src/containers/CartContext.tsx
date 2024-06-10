@@ -19,10 +19,10 @@ interface User {
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (product: CartItem) => void;
-
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
-
+  removeFromCart: (id: number) => void;
+  updateCartItemQuantity: (id: number, quantity: number) => void; // Add this line
 }
 
 // Create the context
@@ -50,8 +50,22 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const updateCartItemQuantity = (id: number, quantity: number) => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id ? { ...item, quantity: quantity } : item
+      )
+    );
+  };
+
+
+  const removeFromCart = (id: number) => {
+    setCartItems(cartItems.filter(item => item.id !== id));
+  };
+
+  
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, user, setUser }}>
+    <CartContext.Provider value={{ cartItems, addToCart, user, setUser, removeFromCart, updateCartItemQuantity }}>
       {children}
     </CartContext.Provider>
   );

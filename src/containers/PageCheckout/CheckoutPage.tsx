@@ -15,9 +15,9 @@ import { CartItem } from "containers/CartContext";
 import PayPalButton from "./PayPalButton";
 
 
-
 const CheckoutPage = () => {
-  const { cartItems } = useCart();
+  const { cartItems, removeFromCart } = useCart();
+  const [quantity, setQuantity] = useState(1);
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
@@ -25,6 +25,7 @@ const CheckoutPage = () => {
 
   // Define Product interface
   interface Product {
+    id: number;
     image: string;
     price: number;
     name: string;
@@ -35,13 +36,12 @@ const CheckoutPage = () => {
   // Map cartItems to Product objects
   // Map cartItems to Product objects
   const products: Product[] = cartItems.map((item: CartItem) => ({
+    id: item.id, // Map id here
     image: item.image,
     price: item.price,
     name: item.name,
     sizes: item.sizes || []
   }));
-
-
 
   const handleScrollToEl = (id: string) => {
     const element = document.getElementById(id);
@@ -50,10 +50,13 @@ const CheckoutPage = () => {
     }, 80);
   };
 
-  const renderProduct = (item: Product, index: number) => {
-    const { image, price, name, sizes } = item;
-    console.log(renderProduct);
+  const handleRemove = (id: number) => {
+    removeFromCart(id);
+  };
 
+  const renderProduct = (item: Product, index: number) => {
+    const { id, image, price, name, sizes } = item;
+    console.log(renderProduct);
 
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
@@ -185,15 +188,19 @@ const CheckoutPage = () => {
 
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
             <div className="hidden sm:block text-center relative">
-              <NcInputNumber className="relative z-10" />
+              <NcInputNumber className="relative z-10" 
+                value={quantity} 
+                onChange={(newValue) => setQuantity(newValue)}      
+              />
             </div>
 
-            <a
-              href="##"
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+            <button
+              onClick={() => handleRemove(id)}
+              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm"
             >
               <span>Remove</span>
-            </a>
+
+            </button>
           </div>
         </div>
       </div>

@@ -1,4 +1,22 @@
-import React, { FC } from "react";
+import React, { createContext, useContext, useState, FC } from "react";
+
+
+interface CartItem {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
+  quantity: number;
+  variant: string;
+  size: string;
+}
+
+interface CartContextProps {
+  cartItems: CartItem[];
+}
+
+const CartContext = createContext<CartContextProps | undefined>(undefined);
+
 
 export interface PricesProps {
   className?: string;

@@ -197,18 +197,31 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
     href: "/page-collection-2",
     name: "Sport",
   },
+  // {
+  //   id: ncNanoId(),
+  //   href: "/page-search",
+  //   name: "Templates",
+  //   type: "megaMenu",
+  //   children: MEGAMENU_TEMPLATES,
+  // },
+  // {
+  //   id: ncNanoId(),
+  //   href: "/page-search",
+  //   name: "Explore",
+  //   type: "dropdown",
+  //   children: OTHER_PAGE_CHILD,
+  // },
+
   {
     id: ncNanoId(),
-    href: "/page-search",
-    name: "Templates",
-    type: "megaMenu",
-    children: MEGAMENU_TEMPLATES,
+    href: "/add-product",
+    name: "Add Product",
+    // type: "dropdown",
+    // children: MEGAMENU_TEMPLATES,
   },
-  {
-    id: ncNanoId(),
-    href: "/page-search",
-    name: "Explore",
-    type: "dropdown",
-    children: OTHER_PAGE_CHILD,
+  { 
+    id: ncNanoId(), 
+    href: "/login", 
+    name: "Login" 
   },
 ];

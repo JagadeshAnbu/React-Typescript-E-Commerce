@@ -33,6 +33,8 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
   const [qualitySelected, setQualitySelected] = React.useState(1);
 
   const notifyAddTocart = () => {
+    const product = PRODUCTS[0]; // Ensure this is the correct product
+
     toast.custom(
       (t) => (
         <NotifyAddTocart
@@ -41,6 +43,8 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
           show={t.visible}
           sizeSelected={sizeSelected}
           variantActive={variantActive}
+          price={product.price}
+          name={product.name}
         />
       ),
       { position: "top-right", id: "nc-product-notify", duration: 3000 }
@@ -67,11 +71,10 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
             <div
               key={index}
               onClick={() => setVariantActive(index)}
-              className={`relative flex-1 max-w-[75px] h-10 rounded-full border-2 cursor-pointer ${
-                variantActive === index
+              className={`relative flex-1 max-w-[75px] h-10 rounded-full border-2 cursor-pointer ${variantActive === index
                   ? "border-primary-6000 dark:border-primary-500"
                   : "border-transparent"
-              }`}
+                }`}
             >
               <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
                 <img
@@ -117,15 +120,13 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
               <div
                 key={index}
                 className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center 
-                text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${
-                  sizeOutStock
+                text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${sizeOutStock
                     ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
                     : "cursor-pointer"
-                } ${
-                  isActive
+                  } ${isActive
                     ? "bg-primary-6000 border-primary-6000 text-white hover:bg-primary-6000"
                     : "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-neutral-50 dark:hover:bg-neutral-700"
-                }`}
+                  }`}
                 onClick={() => {
                   if (sizeOutStock) {
                     return;
@@ -184,19 +185,20 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
   };
 
   const renderSectionContent = () => {
+    const product = PRODUCTS[0]; // Use actual product data
+
     return (
       <div className="space-y-8">
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl font-semibold hover:text-primary-6000 transition-colors">
-            <Link to="/product-detail">Heavy Weight Shoes</Link>
+            <Link to="/product-detail">{product.name}</Link>
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
-            {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-              price={112}
+              price={product.price}
             />
 
             <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div>
@@ -232,7 +234,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
         <div className="flex space-x-3.5">
           <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
             <NcInputNumber
-              defaultValue={qualitySelected}
+              value={qualitySelected}
               onChange={setQualitySelected}
             />
           </div>

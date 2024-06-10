@@ -32,6 +32,8 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "" }) => {
   const [qualitySelected, setQualitySelected] = React.useState(1);
 
   const notifyAddTocart = () => {
+    const product = PRODUCTS[0]; // Ensure this is the correct product
+
     toast.custom(
       (t) => (
         <NotifyAddTocart
@@ -40,6 +42,8 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "" }) => {
           show={t.visible}
           sizeSelected={sizeSelected}
           variantActive={variantActive}
+          price={product.price}
+          name={product.name}
         />
       ),
       { position: "top-right", id: "nc-product-notify", duration: 3000 }
@@ -231,7 +235,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "" }) => {
         <div className="flex space-x-3.5">
           <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
             <NcInputNumber
-              defaultValue={qualitySelected}
+              value={qualitySelected}
               onChange={setQualitySelected}
             />
           </div>
